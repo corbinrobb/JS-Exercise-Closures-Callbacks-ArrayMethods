@@ -363,11 +363,11 @@ function counterMakerWithLimit(limit) {
     if (count < 0 || count < 3) {
       count++;
       return count;
-  } else {
-    count = 0;
-    return count;
+    } else {
+      count = 0;
+      return count;
+    }
   }
-}
 }
 
 /////////////// END OF CHALLENGE ///////////////
