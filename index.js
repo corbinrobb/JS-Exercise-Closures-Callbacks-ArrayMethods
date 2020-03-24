@@ -133,8 +133,8 @@ function processProduct(num1, num2, callback) {
  * should return 3.
 */
 function processDuplicateFree(list, callback) {
-  const newArray = list.filter((a, b) => list.indexOf(a) === b);
-  return callback(newArray);
+  // Array.indexOf() returns the first match in an array and then we filter out the items which indexes dont match that
+  return callback(list.filter((item, index, arr) => arr.indexOf(item) === index));
 }
 
 /////////////// HIGHER-ORDER ARRAY METHODS ///////////////
@@ -157,9 +157,9 @@ function processDuplicateFree(list, callback) {
  * [2] Invoking `lowerCaseStrings` with `['a', 'b', 'c' ]` will return `[ 'a', 'b', 'c' ]`.
 */
 function lowerCaseStrings(strings) {
-  const lowCase = [];
-  strings.forEach( e => lowCase.push(e.toLowerCase()));
-  return lowCase;
+  const lowCaseStr = [];
+  strings.forEach(string => lowCaseStr.push(string.toLowerCase()));
+  return lowCaseStr;
 }
 
 /**
@@ -178,7 +178,7 @@ function lowerCaseStrings(strings) {
  * [2] Invoking `isItAnApple` with `['a', 'b', 'c' ]` will return `[ false, false, false ]`.
 */
 function isItAnApple(strings) {
-  return strings.map(e => (e === 'apple'));
+  return strings.map(string => (string === 'apple'));
 }
 
 /**
@@ -198,7 +198,7 @@ function isItAnApple(strings) {
  * [2] Invoking `removeApple` with `['a', 'b', 'c' ]` will return `[ 'a', 'b', 'c' ]`.
 */
 function removeApple(strings) {
-  return strings.filter(e => e !== 'apple');
+  return strings.filter(string => string !== 'apple');
 }
 
 /**
@@ -218,7 +218,7 @@ function removeApple(strings) {
 */
 function stringSmash(strings) {
   return strings.reduce((acc, curr) => {
-    return acc += curr;
+    return acc + curr;
   }, '');
 }
 
@@ -238,9 +238,7 @@ function stringSmash(strings) {
  * The full names appear in the array in the same order the runners appear in the `runners` array.
 */
 function getFullNames(runners) {
-  return runners.map(e => {
-    return `${e.last_name}, ${e.first_name}`;
-  });
+  return runners.map(runner => `${runner.last_name}, ${runner.first_name}`);
 }
 
 /**
@@ -256,7 +254,7 @@ function getFullNames(runners) {
  * The first names appear in the array in the same order the runners appear in the `runners` array.
 */
 function firstNamesAllCaps(runners) {
-  return runners.map(e => `${e.first_name.toUpperCase()}`);
+  return runners.map(runner => runner.first_name.toUpperCase());
 }
 
 /**
@@ -274,7 +272,7 @@ function firstNamesAllCaps(runners) {
  * The runners in the array appear in the same order they appear in the `runners` array.
 */
 function getRunnersByTShirtSize(runners, tShirtSize) {
-  return runners.filter(e => e.shirt_size === tShirtSize);
+  return runners.filter(runner => runner.shirt_size === tShirtSize);
 }
 
 /**
@@ -289,8 +287,8 @@ function getRunnersByTShirtSize(runners, tShirtSize) {
  * @returns a number which is the sum of the donations by all runners.
 */
 function tallyUpDonations(runners) {
-  return runners.reduce((acc, e) => {
-    return acc += e.donation;
+  return runners.reduce((acc, curr) => {
+    return acc += curr.donation;
   }, 0);
 }
 
@@ -310,10 +308,12 @@ function tallyUpDonations(runners) {
  * 
  * 2. Which of the two uses a closure? How can you tell?
  * 
- *    The first uses a closure because it has a variable declared in its local scope.
+ *    The first uses a closure because it has a variable declared in its local scope that increments when the method counter is called.
  * 
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
- * 
+ *    
+ *    Counter1 would be more prefereable in situations when you are working with a lot of different functions and data where you wouldnt want to have a global scope count variable that could confuse you or get overwritten. 
+ *    Counter2 could be more preferable in a situation when multiple functions or data sets would be using the count variable in a simplistic application.  
  *  
  *
 */
@@ -359,18 +359,15 @@ function counter2() {
 function counterMakerWithLimit(limit) {
   let count = -1;
 
-  return function increase() {
-    if (count < 0) {
+  return function counter() {
+    if (count < 0 || count < 3) {
       count++;
       return count;
-    } else if (count < limit && count !== 3) {
-      count++;
-      return count;
-    } else {
-      count = 0;
-      return count;
-    }
+  } else {
+    count = 0;
+    return count;
   }
+}
 }
 
 /////////////// END OF CHALLENGE ///////////////
