@@ -158,8 +158,11 @@ function processDuplicateFree(list, callback) {
 */
 function lowerCaseStrings(strings) {
   const lowCaseStr = [];
-  strings.forEach(string => lowCaseStr.push(string.toLowerCase()));
+  strings.forEach(function(item){
+    return lowCaseStr.push(item.toLowerCase());
+  });
   return lowCaseStr;
+  
 }
 
 /**
@@ -357,15 +360,13 @@ function counter2() {
  * etc
 */
 function counterMakerWithLimit(limit) {
-  let count = -1;
-
+  let count = 0;
   return function counter() {
-    if (count < 0 || count < 3) {
-      count++;
-      return count;
+    if (count <= limit) {
+      return count++;
     } else {
       count = 0;
-      return count;
+      return count++;
     }
   }
 }
